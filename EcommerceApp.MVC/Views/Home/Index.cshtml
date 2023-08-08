@@ -1,8 +1,8 @@
-﻿@model List<SliderHomeIndexDto>
+﻿@model HomeIndexVm
     <!-- slider-area start -->
 <section class="slider-area pos-relative">
     <div class="slider-active">
-        @foreach (var slider in Model)
+        @foreach (var slider in Model.Sliders)
         {
             <div class="single-slider slide-1-style slide-height d-flex align-items-center" data-background="@slider.BackgroundImage">
                 <div class="shape-title bounce-animate">
@@ -40,21 +40,16 @@
 <section class="banner-area pt-30 pl-15 pr-15">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-4 col-md-6">
-                <div class="banner mb-30">
-                    <a href="shop.html"><img src="~/img/banner/banner-1/banner1.jpg" alt=""></a>
+            @foreach (var banner in Model.BannerAds)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="banner mb-30">
+                        <a href="shop.html"><img src="@banner.Image" alt=""></a>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="banner mb-30">
-                    <a href="shop.html"><img src="~/img/banner/banner-1/banner2.jpg" alt=""></a>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6">
-                <div class="banner mb-30">
-                    <a href="shop.html"><img src="~/img/banner/banner-1/banner3.jpg" alt=""></a>
-                </div>
-            </div>
+
+            }
+
         </div>
     </div>
 </section>

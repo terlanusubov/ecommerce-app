@@ -48,6 +48,38 @@ namespace EcommerceApp.MVC.Migrations
                     b.ToTable("Avenues");
                 });
 
+            modelBuilder.Entity("EcommerceApp.MVC.Models.BannerAd", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("BannerAdStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("ExpireDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("Updated")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("BannerAds");
+                });
+
             modelBuilder.Entity("EcommerceApp.MVC.Models.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -409,6 +441,11 @@ namespace EcommerceApp.MVC.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int>("SliderStatusId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(10);
+
                     b.Property<string>("Slogan")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -555,6 +592,15 @@ namespace EcommerceApp.MVC.Migrations
                         .HasConstraintName("Avenues_fk0");
 
                     b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("EcommerceApp.MVC.Models.BannerAd", b =>
+                {
+                    b.HasOne("EcommerceApp.MVC.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("EcommerceApp.MVC.Models.Product", b =>

@@ -10,6 +10,7 @@ namespace EcommerceApp.MVC.Models
         public string Title { get; set; }
         public string Slogan { get; set; }
         public int CategoryId { get; set; }
+        public int SliderStatusId { get; set; }
 
         public virtual Category Category { get; set; }
     }

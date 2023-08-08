@@ -15,6 +15,10 @@ public partial class ApplicationDbContext : DbContext
     {
     }
 
+
+
+    public virtual DbSet<BannerAd> BannerAds { get; set; }
+
     public virtual DbSet<Slider> Sliders { get; set; }
 
     public virtual DbSet<Avenue> Avenues { get; set; }
@@ -80,6 +84,8 @@ public partial class ApplicationDbContext : DbContext
             entity.Property(e => e.CategoryId).IsRequired();
 
             entity.Property(e => e.BackgroundImage).IsRequired();
+
+            entity.Property(e => e.SliderStatusId).HasDefaultValue(10);
 
         });
 

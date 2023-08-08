@@ -17,6 +17,10 @@
     <None Remove="Views\Shared\" />
     <None Remove="DTOs\" />
     <None Remove="DTOs\Sliders\" />
+    <None Remove="Enums\" />
+    <None Remove="DTOs\BannerAds\" />
+    <None Remove="ViewModels\" />
+    <None Remove="ViewModels\Home\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -30,6 +34,11 @@
     <Folder Include="wwwroot\uploads\sliders\" />
     <Folder Include="DTOs\" />
     <Folder Include="DTOs\Sliders\" />
+    <Folder Include="Enums\" />
+    <Folder Include="DTOs\BannerAds\" />
+    <Folder Include="wwwroot\uploads\bannerAds\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="ViewModels\Home\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
@@ -48,5 +57,6 @@
     <Content Remove="wwwroot\manifests\" />
     <Content Remove="wwwroot\uploads\" />
     <Content Remove="wwwroot\uploads\sliders\" />
+    <Content Remove="wwwroot\uploads\bannerAds\" />
   </ItemGroup>
 </Project>
