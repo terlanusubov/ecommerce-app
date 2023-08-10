@@ -21,6 +21,8 @@
     <None Remove="DTOs\BannerAds\" />
     <None Remove="ViewModels\" />
     <None Remove="ViewModels\Home\" />
+    <None Remove="Views\Account\" />
+    <None Remove="ViewModels\Account\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -39,6 +41,8 @@
     <Folder Include="wwwroot\uploads\bannerAds\" />
     <Folder Include="ViewModels\" />
     <Folder Include="ViewModels\Home\" />
+    <Folder Include="Views\Account\" />
+    <Folder Include="ViewModels\Account\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">

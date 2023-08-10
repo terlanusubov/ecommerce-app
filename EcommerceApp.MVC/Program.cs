@@ -1,9 +1,14 @@
 ﻿using EcommerceApp.MVC.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -13,6 +18,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 var app = builder.Build();
 
 
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseStaticFiles();
 
