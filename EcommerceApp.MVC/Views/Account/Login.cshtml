@@ -1,4 +1,5 @@
-﻿  <!-- breadcrumb-area-start -->
+﻿@model LoginModel
+ <!-- breadcrumb-area-start -->
 <section class="breadcrumb-area" data-background="/img/bg/page-title.png">
     <div class="container">
         <div class="row">
@@ -22,11 +23,14 @@
             <div class="col-lg-8 offset-lg-2">
                 <div class="basic-login">
                     <h3 class="text-center mb-60">Login From Here</h3>
-                    <form action="#">
+                    @Html.ValidationSummary(true)
+                    <form action="@Url.Action("Login","Account")" method="post">
+                        @Html.ValidationMessageFor(c => c.Email)
                         <label for="name">Email Address <span>**</span></label>
-                        <input id="name" type="text" placeholder="Enter Username or Email address..." />
+                        <input name="Email" id="name" type="text" placeholder="Enter Username or Email address..." />
+                        @Html.ValidationMessageFor(c => c.Password)
                         <label for="pass">Password <span>**</span></label>
-                        <input id="pass" type="password" placeholder="Enter password..." />
+                        <input name="Password" id="pass" type="password" placeholder="Enter password..." />
                         <div class="login-action mb-20 fix">
                             <span class="log-rem f-left">
                                 <input id="remember" type="checkbox" />
@@ -36,7 +40,7 @@
                                 <a href="#">Lost your password?</a>
                             </span>
                         </div>
-                        <button class="btn theme-btn-2 w-100">Login Now</button>
+                        <button type="submit" class="btn theme-btn-2 w-100">Login Now</button>
                         <div class="or-divide"><span>or</span></div>
                         <button class="btn theme-btn w-100">Register Now</button>
                     </form>

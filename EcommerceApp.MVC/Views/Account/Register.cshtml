@@ -1,4 +1,5 @@
-﻿   <!-- breadcrumb-area-start -->
+﻿@model RegisterModel
+<!-- breadcrumb-area-start -->
 <section class="breadcrumb-area" data-background="/img/bg/page-title.png">
     <div class="container">
         <div class="row">
@@ -22,15 +23,25 @@
             <div class="col-lg-8 offset-lg-2">
                 <div class="basic-login">
                     <h3 class="text-center mb-60">Signup From Here</h3>
+                    @Html.ValidationSummary(true)
                     <form action="@Url.Action("Register","Account")" method="post">
+                        @Html.ValidationMessageFor(c => c.Name)
                         <label for="name">Name <span>**</span></label>
-                        <input name="Name" id="name" type="text" placeholder="Enter Name..." />
+                        <input value="@Model?.Name" name="Name" id="name" type="text" placeholder="Enter Name..." />
+
+                        @Html.ValidationMessageFor(c => c.Surname)
                         <label for="surname">Surname <span>**</span></label>
-                        <input name="Surname" id="surname" type="text" placeholder="Enter Surname..." />
+                        <input value="@Model?.Surname" name="Surname" id="surname" type="text" placeholder="Enter Surname..." />
+                        @Html.ValidationMessageFor(c => c.Email)
                         <label for="email-id">Email Address <span>**</span></label>
-                        <input name="Email" id="email-id" type="text" placeholder="Enter Email address..." />
+                        <input value="@Model?.Email" name="Email" id="email-id" type="text" placeholder="Enter Email address..." />
+                        @Html.ValidationMessageFor(c => c.Password)
                         <label for="pass">Password <span>**</span></label>
                         <input name="Password" id="pass" type="password" placeholder="Enter password..." />
+
+                        @Html.ValidationMessageFor(c => c.ConfirmPassword)
+                        <label for="confimpass">Confirm Password <span>**</span></label>
+                        <input name="ConfirmPassword" id="confimpass" type="password" placeholder="Enter confirm password..." />
                         <div class="mt-10"></div>
                         <button type="submit" class="btn theme-btn-2 w-100">Register Now</button>
                         <div class="or-divide"><span>or</span></div>

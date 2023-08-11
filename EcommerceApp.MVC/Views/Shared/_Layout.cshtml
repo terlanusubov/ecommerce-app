@@ -25,6 +25,16 @@
     <link rel="stylesheet" href="~/css/default.css">
     <link rel="stylesheet" href="~/css/style.css">
     <link rel="stylesheet" href="~/css/responsive.css">
+    <style>
+        .field-validation-error {
+            color: red;
+        }
+
+        .validation-summary-errors li {
+            color: red;
+            font-size: 1.3em;
+        }
+    </style>
 </head>
 <body>
 
@@ -226,10 +236,29 @@
                     <div class="col-xl-2 col-lg-6 col-md-6 col-5 col-sm-7 pl-0">
                         <div class="header-right f-right">
                             <ul>
-                                <li class="search-btn">
-                                    <a class="search-btn nav-search search-trigger" href="#"><i class="fas fa-search"></i></a>
-                                </li>
-                                <li class="login-btn"><a href="@Url.Action("Login","Account")"><i class="far fa-user"></i></a></li>
+
+                                @if (Context.User.Identity.IsAuthenticated)
+                                {
+                                    var name = Context.User.Claims.Where(c => c.Type == "Name").FirstOrDefault();
+                                    var surname = Context.User.Claims.Where(c => c.Type == "Surname").FirstOrDefault();
+                                    <li class="logged-in">
+                                        <a href="@Url.Action("Login","Account")">
+                                            @name?.Value @surname?.Value
+                                        </a>
+                                    </li>
+                                    <li class="logged-in">
+                                        <a href="@Url.Action("Logout","Account")">Sign out</a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="search-btn">
+                                        <a class="search-btn nav-search search-trigger" href="#"><i class="fas fa-search"></i></a>
+                                    </li>
+                                    <li class="login-btn"><a href="@Url.Action("Login","Account")"><i class="far fa-user"></i></a></li>
+                                }
+
+
                                 <li class="d-shop-cart">
                                     <a href="#"><i class="flaticon-shopping-cart"></i> <span class="cart-count">3</span></a>
                                     <ul class="minicart">
