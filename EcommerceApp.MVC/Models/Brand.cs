@@ -7,7 +7,7 @@ public partial class Brand
 {
     public int Id { get; set; }
 
-    public int Name { get; set; }
+    public string Name { get; set; }
 
     public int BrandStatusId { get; set; }
 

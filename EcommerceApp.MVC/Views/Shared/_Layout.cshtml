@@ -243,11 +243,11 @@
                                     var surname = Context.User.Claims.Where(c => c.Type == "Surname").FirstOrDefault();
                                     <li class="logged-in">
                                         <a href="@Url.Action("Login","Account")">
-                                            @name?.Value @surname?.Value
+                                            @name?.Value[0] @surname?.Value[0]
                                         </a>
                                     </li>
                                     <li class="logged-in">
-                                        <a href="@Url.Action("Logout","Account")">Sign out</a>
+                                        <a href="@Url.Action("Logout","Account")">SO</a>
                                     </li>
                                 }
                                 else

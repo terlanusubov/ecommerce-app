@@ -1,5 +1,7 @@
 ﻿using System;
 using EcommerceApp.MVC.DTOs.BannerAds;
+using EcommerceApp.MVC.DTOs.Categories;
+using EcommerceApp.MVC.DTOs.Products;
 using EcommerceApp.MVC.DTOs.Sliders;
 using EcommerceApp.MVC.Enums;
 using EcommerceApp.MVC.Models;
@@ -23,6 +25,7 @@ namespace EcommerceApp.MVC.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //Sliders
 
             var sliders = await _context
                                     .Sliders
@@ -39,6 +42,8 @@ namespace EcommerceApp.MVC.Controllers
 
 
             var take = Convert.ToInt32(_configuration["Lists:BannerAds"]);
+
+            //Banners
             var bannerAds = await _context.BannerAds
             .Where(c => c.BannerAdStatusId == (int)BannerStatus.Active)
             .OrderByDescending(c => c.Id)
@@ -49,12 +54,34 @@ namespace EcommerceApp.MVC.Controllers
                 Image = _configuration["Files:BannerAds"] + c.Image
             }).Take(take).ToListAsync();
 
+            //Categories
+            var categories = await _context
+                                    .Categories
+                                      .Include(c=>c.Products)
+                                        .Select(c=>new CategoryHomeIndexDto {
+                                            CategoryId = c.Id,
+                                            Name = c.Name,
+                                            Products = c.Products
+                                                        .Where(a => a.ProductStatusId == (int)ProductStatus.Home)
+                                                            .Select(a => new ProductDto { 
+                                                            Name = a.Name,
+                                                            Price = a.Price.ToString("#.##"),
+                                                            CategoryName  = c.Name,
+                                                            ProductId = a.Id,
+                                                            //ternory operator
+                                                            AfterDiscountPrice = a.Discount == null ? null : (a.Price * a.Discount /100).ToString(),
+                                                            MainImage = _configuration["Files:Products"] + a.ProductPhotos.Where(b=>b.IsMain == true).Select(b=>b.Image).FirstOrDefault(),
+                                                            Images =a.ProductPhotos.Where(b=>b.IsMain == false).Select(b => _configuration["Files:Products"] + b.Image).ToList()
+                                                            
+                                                            }).ToList()
+                                        }).ToListAsync();
+
 
             var vm = new HomeIndexVm();
 
             vm.Sliders = sliders;
             vm.BannerAds = bannerAds;
-
+            vm.Categories = categories;
 
             return View(vm);
         }
