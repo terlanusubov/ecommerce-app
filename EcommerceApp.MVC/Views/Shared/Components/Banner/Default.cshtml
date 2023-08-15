@@ -1,0 +1,18 @@
+﻿@using EcommerceApp.MVC.DTOs.BannerAds
+@model List<BannerHomeIndexDto>
+<section class="banner-area pt-30 pl-15 pr-15">
+    <div class="container-fluid">
+        <div class="row">
+            @foreach (var banner in Model)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="banner mb-30">
+                        <a href="shop.html"><img src="@banner.Image" alt=""></a>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</section>

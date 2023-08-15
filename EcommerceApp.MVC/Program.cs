@@ -26,5 +26,6 @@ app.UseStaticFiles();
 app.MapControllerRoute("default",
                       "{controller=Home}/{action=Index}");
 
-
+app.MapControllerRoute("admin",
+                      "{area:exists}/{controller=Home}/{action=Index}");
 app.Run();

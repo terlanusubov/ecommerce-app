@@ -1,0 +1,11 @@
+﻿@using EcommerceApp.MVC.DTOs.Categories
+@model List<CategoryHomeIndexDto>
+<div class="category-menu">
+    <h4>Category</h4>
+    <ul>
+        @foreach (var category in Model)
+        {
+            <li><a href="#"><i class="flaticon-shopping-cart-1"></i>@category.Name</a></li>
+        }
+    </ul>
+</div>
