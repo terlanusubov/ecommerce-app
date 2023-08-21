@@ -1,0 +1,103 @@
+﻿@model List<CategoryListDto>
+<div id="tableFooter" class="col-lg-12 col-12 layout-spacing">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4>Categories</h4>
+                    <a href="@Url.Action("Add","Category")" class="btn btn-outline-primary mb-2">Add Category</a>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover table-condensed mb-4">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model)
+                        {
+                            <tr>
+                                <td>@category.CategoryId</td>
+                                <td>@category.Name</td>
+                                <td class="text-center">
+                                    <ul class="table-controls">
+                                        <li><a href="@Url.Action("Edit","Category", new{categoryId = category.CategoryId})" data-toggle="tooltip" data-placement="top" title="Edit"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle text-primary"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg></a></li>
+                                        <li>
+                                            <form id="delete-form" method="get" action="@Url.Action("Delete","Category", new  { categoryId = category.CategoryId})">
+                                                <input type="hidden" name="categoryId" />
+                                                <button type="submit" data-toggle="tooltip" data-placement="top" title="Delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x-circle text-danger"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg></button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+            </div>
+            @await Component.InvokeAsync("Pagination", ViewBag.Pagination)
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+@section Styles
+{
+    <link href="~/admin/assets/css/elements/custom-pagination.css" rel="stylesheet" type="text/css" />
+    <link href="~/admin/assets/css/scrollspyNav.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="~/admin/assets/css/forms/theme-checkbox-radio.css">
+    <link href="~/admin/assets/css/tables/table-basic.css" rel="stylesheet" type="text/css" />
+    <link href="~/admin/plugins/animate/animate.css" rel="stylesheet" type="text/css" />
+    <script src="~/admin/plugins/sweetalerts/promise-polyfill.js"></script>
+    <link href="~/admin/plugins/sweetalerts/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/admin/plugins/sweetalerts/sweetalert.css" rel="stylesheet" type="text/css" />
+    <link href="~/admin/assets/css/components/custom-sweetalert.css" rel="stylesheet" type="text/css" />
+
+
+}
+
+
+@section Scripts
+{
+
+    <script src="~/admin/assets/js/scrollspyNav.js"></script>
+    <script>checkall('todoAll', 'todochkbox');
+        $('[data-toggle="tooltip"]').tooltip()</script>
+
+    <script src="~/admin/assets/js/scrollspyNav.js"></script>
+    <script src="~/admin/plugins/sweetalerts/sweetalert2.min.js"></script>
+    <script src="~/admin/plugins/sweetalerts/custom-sweetalert.js"></script>
+    <script>let deleteForm = document.querySelector("#delete-form");
+
+
+        deleteForm.addEventListener("submit", function (e) {
+            e.preventDefault();
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                padding: '2em'
+            }).then(function (result) {
+                if (result.value) {
+
+                    deleteForm.submit();
+                }
+            })
+
+
+        })</script>
+}

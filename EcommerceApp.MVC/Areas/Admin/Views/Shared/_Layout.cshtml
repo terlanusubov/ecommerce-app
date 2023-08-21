@@ -18,7 +18,7 @@
     <link href="~/admin/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
     <link href="~/admin/assets/css/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-
+    @RenderSection("Styles", false)
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body class="alt-menu sidebar-noneoverflow">
@@ -118,7 +118,7 @@
 
 
                     <li class="menu">
-                        <a href="apps_notes.html" aria-expanded="false" class="dropdown-toggle">
+                        <a href="@Url.Action("List","Category")" aria-expanded="false" class="dropdown-toggle">
                             <div class="">
                                 <i data-feather="list"></i>
                                 <span>Categories</span>
@@ -171,17 +171,21 @@
     <script src="~/admin/bootstrap/js/popper.min.js"></script>
     <script src="~/admin/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/admin/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+
     <script src="~/admin/assets/js/app.js"></script>
     <script>feather.replace()</script>
-    <script>$(document).ready(function () {
+
+    @*<script>$(document).ready(function () {
             App.init();
-        });</script>
+        });</script>*@
     <script src="~/admin/assets/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     <script src="~/admin/plugins/apex/apexcharts.min.js"></script>
     <script src="~/admin/assets/js/dashboard/dash_1.js"></script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
+    @RenderSection("Scripts", false)
+
 
 </body>
 </html>

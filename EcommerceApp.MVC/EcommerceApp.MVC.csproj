@@ -39,6 +39,10 @@
     <None Remove="Areas\Admin\Views\Product\" />
     <None Remove="Areas\Admin\Views\Account\" />
     <None Remove="Filters\" />
+    <None Remove="Areas\Admin\Views\Category\" />
+    <None Remove="Areas\Admin\Components\" />
+    <None Remove="Areas\Admin\Views\Shared\Components\" />
+    <None Remove="Areas\Admin\Views\Shared\Components\Pagination\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -73,6 +77,10 @@
     <Folder Include="wwwroot\admin\" />
     <Folder Include="Areas\Admin\Views\Account\" />
     <Folder Include="Filters\" />
+    <Folder Include="Areas\Admin\Views\Category\" />
+    <Folder Include="Areas\Admin\Components\" />
+    <Folder Include="Areas\Admin\Views\Shared\Components\" />
+    <Folder Include="Areas\Admin\Views\Shared\Components\Pagination\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
@@ -93,5 +101,6 @@
     <Content Remove="wwwroot\uploads\sliders\" />
     <Content Remove="wwwroot\uploads\bannerAds\" />
     <Content Remove="wwwroot\admin\" />
+    <Content Remove="Views\Shared\Components\Pagination\Default.cshtml" />
   </ItemGroup>
 </Project>

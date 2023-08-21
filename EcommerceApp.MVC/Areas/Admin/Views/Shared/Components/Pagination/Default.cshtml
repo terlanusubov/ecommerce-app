@@ -1,0 +1,12 @@
+﻿@model PaginationModel
+<div class="paginating-container pagination-default">
+    <ul class="pagination">
+        <li class="prev"><a href="javascript:void(0);">Prev</a></li>
+        @for (var i = 1; i <= Model.Count; i++)
+        {
+
+            <li class="@(Model.Page == i ? "active" : "")"><a href="@(Model.Url + "?page="+i)">@i</a></li>
+        }
+        <li class="next"><a href="javascript:void(0);">Next</a></li>
+    </ul>
+</div>
