@@ -43,6 +43,7 @@
     <None Remove="Areas\Admin\Components\" />
     <None Remove="Areas\Admin\Views\Shared\Components\" />
     <None Remove="Areas\Admin\Views\Shared\Components\Pagination\" />
+    <None Remove="Areas\Admin\DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -81,6 +82,7 @@
     <Folder Include="Areas\Admin\Components\" />
     <Folder Include="Areas\Admin\Views\Shared\Components\" />
     <Folder Include="Areas\Admin\Views\Shared\Components\Pagination\" />
+    <Folder Include="Areas\Admin\DTOs\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">

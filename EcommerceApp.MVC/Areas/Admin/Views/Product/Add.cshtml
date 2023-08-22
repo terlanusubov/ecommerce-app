@@ -1,0 +1,169 @@
+﻿@model ProductAddVm
+<div id="basic" class="col-lg-12 layout-spacing">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4>Add Product</h4>
+                </div>
+            </div>
+        </div>
+        <div class="widget-content widget-content-area">
+
+            <div class="row">
+                <div class="col-lg-6 col-12 mx-auto">
+                    <form action="@Url.Action("Add","Product")" method="post" enctype="multipart/form-data">
+
+                        @*Status*@
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status" required name="Product.StatusId" class="form-control  basic">
+                                <option value="10">Aktiv</option>
+                                <option value="20">Deaktiv</option>
+                                <option value="30">Home</option>
+                            </select>
+
+                        </div>
+
+                        @*Main Image*@
+                        <div class="form-group">
+                            <label for="mainImage">Main image</label>
+                            <input id="mainImage" name="Product.MainImage" class="form-control basic" type="file" />
+                        </div>
+
+                        @*Images*@
+                        <div class="form-group">
+                            <label for="image">Images</label>
+                            <input id="image" class="form-control basic" name="Product.Images" type="file" multiple />
+                        </div>
+
+
+
+
+                        @*Name*@
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input id="name" type="text" name="Product.Name" placeholder="Product name..." class="form-control" required>
+                        </div>
+                        @*Category*@
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select required name="Product.CategoryId" id="category" class="form-control  basic">
+
+                                <option selected="selected">--</option>
+
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <option value="@category.CategoryId">@category.Name</option>
+
+                                }
+                            </select>
+
+                        </div>
+
+                        @*Brand*@
+
+                        <div class="form-group">
+                            <label for="brand">Brand</label>
+                            <select id="brand" required name="Product.BrandId" class="form-control  basic">
+
+                                <option selected="selected">--</option>
+
+                                @foreach (var brand in Model.Brands)
+                                {
+                                    <option value="@brand.BrandId">@brand.Name</option>
+
+                                }
+                            </select>
+
+                        </div>
+
+                        @*Color*@
+                        <div class="form-group">
+                            <label for="color">Color</label>
+
+                            <select id="color" required name="Product.ColorId" class="form-control  basic">
+                                <option selected="selected">--</option>
+
+                                @foreach (var color in Model.Colors)
+                                {
+                                    <option value="@color.ColorId">@color.Name</option>
+
+                                }
+                            </select>
+
+                        </div>
+
+                        @*Size*@
+                        <div class="form-group">
+                            <label for="size">Size</label>
+
+                            <select id="size" required name="Product.SizeId" class="form-control  basic">
+                                <option selected="selected">--</option>
+
+                                @foreach (var size in Model.Sizes)
+                                {
+                                    <option value="@size.SizeId">@size.Name</option>
+
+                                }
+                            </select>
+
+                        </div>
+
+                        @*Price*@
+                        <div class="form-group">
+                            <label for="price">Price</label>
+                            <input id="price" type="number" name="Product.Price" placeholder="Product price..." class="form-control" required>
+                        </div>
+
+                        @*Discount*@
+                        <div class="form-group">
+                            <label for="discount">Discount</label>
+                            <input id="discount" type="number" name="Product.Discount" placeholder="Product discount..." class="form-control" required>
+                        </div>
+
+
+                        @*Short desc*@
+                        <div class="form-group">
+                            <label for="shortdesc">Short description</label>
+                            <textarea id="shortdesc" name="Product.ShortDesc" class="form-control"></textarea>
+                        </div>
+
+
+                        @*Stock count*@
+                        <div class="form-group">
+                            <label for="stockcount">Stock count</label>
+                            <input id="stockcount" type="number" name="Product.StockCount" placeholder="Product stock count..." class="form-control" required>
+                        </div>
+
+
+                        @*Description*@
+                        <div class="form-group">
+                            <label for="desc">Description</label>
+                            <textarea id="desc" name="Product.Description" class="form-control"></textarea>
+                        </div>
+
+
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">ADD PRODUCT</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Styles
+{
+
+    <link rel="stylesheet" type="text/css" href="~/admin/plugins/select2/select2.min.css">
+}
+
+@section Scripts
+{
+
+    <script src="~/admin/plugins/select2/select2.min.js"></script>
+}
