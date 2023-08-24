@@ -40,7 +40,7 @@ namespace EcommerceApp.MVC.Components
                                                                 CategoryName = c.Name,
                                                                 ProductId = a.Id,
                                                                 //ternory operator
-                                                                AfterDiscountPrice = a.Discount == null ? null : (a.Price * a.Discount / 100).ToString(),
+                                                                AfterDiscountPrice = a.Discount == null ? null : (a.Price - (a.Price * a.Discount / 100)).ToString(),
                                                                 MainImage = _configuration["Files:Products"] + a.ProductPhotos.Where(b => b.IsMain == true).Select(b => b.Image).FirstOrDefault(),
                                                                 Images = a.ProductPhotos.Where(b => b.IsMain == false).Select(b => _configuration["Files:Products"] + b.Image).ToList()
 

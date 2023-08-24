@@ -44,7 +44,7 @@
                                         <div class="pro-item">
                                             <div class="product-wrapper mb-50">
                                                 <div class="product-img mb-25">
-                                                    <a href="product-details.html">
+                                                    <a href="@Url.Action("Index","Product",new {productId = product.ProductId})">
                                                         <img src="@product.MainImage" alt="">
                                                         <img class="secondary-img" src="@product.Images?.FirstOrDefault()" alt="">
                                                     </a>
