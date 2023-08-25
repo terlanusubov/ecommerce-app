@@ -63,7 +63,7 @@
                         @foreach (var item in Model.Images)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#image_@counter" role="tab" aria-selected="false">
+                                <a class="nav-link" id="image_@counter" data-toggle="tab" href="#image_@counter" role="tab" aria-selected="false">
                                     <img src="@item" alt="">
                                 </a>
                             </li>
@@ -103,11 +103,11 @@
                                 {
                                     if (item.Any(c => c.ProductId == Model.ProductId))
                                     {
-                                        <li class="active"><a href="@Url.Action("Index", "Product", new { Model.ProductId })"><span class="@item.Key"></span></a></li>
+                                        <li class="active"><a href="@Url.Action("Index", "Product", new { productId = Model.ProductId , color = item.Key})"><span style="background:@item.Key" class="@item.Key"></span></a></li>
                                     }
                                     else
                                     {
-                                        <li><a href="@Url.Action("Index", "Product", new { item.FirstOrDefault()?.ProductId })"><span class="@item.Key"></span></a></li>
+                                        <li><a href="@Url.Action("Index", "Product", new { productId = item.FirstOrDefault()?.ProductId, color = item.Key })"><span style="background:@item.Key" class="@item.Key"></span></a></li>
                                     }
 
                                 }
@@ -115,27 +115,27 @@
                             </ul>
                         </div>
 
-                        @*<div class="product-size variant-item">
-                                <div class="variant-name">
-                                    <span>size</span>
-                                </div>
-                                <ul class="shop-link shop-size">
-                                    @foreach (var item in Model.Sizes)
+                        <div class="product-size variant-item">
+                            <div class="variant-name">
+                                <span>size</span>
+                            </div>
+                            <ul class="shop-link shop-size">
+                                @foreach (var item in Model.Sizes)
+                                {
+                                    if (item.Any(c => c.ProductId == Model.ProductId))
                                     {
-                                        if (item.ProductId == Model.ProductId)
-                                        {
-                                            <li class="active"><a href="@Url.Action("Index","Product",new { productId = item.ProductId})">@item.Size   </a></li>
-                                        }
-                                        else
-                                        {
-                                            <li><a href="@Url.Action("Index","Product",new { productId = item.ProductId})">@item.Size   </a></li>
-                                        }
-
+                                        <li class="active"><a href="@Url.Action("Index","Product",new { productId = Model.ProductId})">@item.Key   </a></li>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="@Url.Action("Index","Product",new { productId = item.FirstOrDefault()?.ProductId})">@item.Key   </a></li>
                                     }
 
+                                }
 
-                                </ul>
-                            </div>*@
+
+                            </ul>
+                        </div>
 
                         <div class="product-desc variant-item">
                             <p>
@@ -305,3 +305,40 @@
     </div>
 </section>
 <!-- shop-area end -->
+@section Styles
+{
+
+    <style>
+        .shop-link.shop-color li.active {
+            border: 1px solid red;
+        }
+    </style>
+
+}
+
+@section Scripts{
+
+    <script>let size = document.querySelectorAll(".shop-size li a");
+        console.log(size);
+        for (let s of size) {
+            s.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                let color = document.querySelector(".shop-color li.active a span");
+
+                let newLink = s.getAttribute("href");
+                newLink = newLink + "&color=" + color.getAttribute("class");
+
+                let linkElement = document.createElement("a");
+                linkElement.style.display = "none";
+                linkElement.setAttribute("href", newLink);
+
+                document.body.appendChild(linkElement);
+
+                linkElement.click();
+
+
+            });
+        }</script>
+
+}

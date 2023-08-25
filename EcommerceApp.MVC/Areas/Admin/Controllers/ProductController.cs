@@ -134,7 +134,7 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
 
 
                 //MAIN IMAGE
-                string mainImageFileName = Guid.NewGuid().ToString() + request.Product.MainImage.FileName;
+                string mainImageFileName = Guid.NewGuid().ToString() + request.Product.MainImage.FileName.Replace(" ", "");
 
                 string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "products", mainImageFileName);
 
@@ -155,9 +155,9 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
                 //IMAGES
                 foreach (var image in request.Product.Images)
                 {
-                    string imageFileName = Guid.NewGuid().ToString() + image.FileName;
+                    string imageFileName = Guid.NewGuid().ToString() + image.FileName.Replace(" ", "");
 
-                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "products", mainImageFileName);
+                    string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "products", imageFileName);
 
                     using (FileStream stream = new FileStream(imagePath, FileMode.Create))
                     {
@@ -166,7 +166,7 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
 
                     var pPhoto = new ProductPhoto();
 
-                    pPhoto.Image = mainImageFileName;
+                    pPhoto.Image = imageFileName;
                     pPhoto.IsMain = false;
                     pPhoto.ProductId = product.Id;
 

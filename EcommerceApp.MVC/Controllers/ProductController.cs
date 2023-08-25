@@ -25,7 +25,8 @@ namespace EcommerceApp.MVC.Controllers
             return View();
         }
 
-        public async Task<IActionResult> Index(int productId)
+        [HttpGet]
+        public async Task<IActionResult> Index(int productId, string color = null)
         {
 
             var hasProduct = await _context.Products.AnyAsync(c => c.Id == productId && c.ProductStatusId != (int)ProductStatus.Deactive);
@@ -76,21 +77,20 @@ namespace EcommerceApp.MVC.Controllers
                 }).GroupBy(c => c.Color).ToListAsync();
 
 
-            //var sizes = await _context.ProductSizes
-            //                            .Include(c => c.Size)
-            //                            .Where(c => c.Product.MainCode == product.MainCode)
-            //                            .Select(c => new ProductSizeDto
-            //                            {
-            //                                MainCode = product.MainCode,
-            //                                Size = c.Size.Name,
-            //                                ProductId = c.ProductId
+            var sizes = await _context.ProductSizes
+                                        .Include(c => c.Size)
+                                        .Where(c => c.Product.MainCode == product.MainCode &&
+                                        (color == null || c.Product.ProductColors.Any(a => a.Color.Name == color)))
+                                        .Select(c => new ProductSizeDto
+                                        {
+                                            MainCode = product.MainCode,
+                                            Size = c.Size.Name,
+                                            ProductId = c.ProductId
 
-            //                            }).Distinct().ToListAsync();
+                                        }).GroupBy(c => c.Size).ToListAsync();
 
             product.Colors = colors;
-            //product.Sizes = sizes;
-
-
+            product.Sizes = sizes;
 
 
             return View(product);

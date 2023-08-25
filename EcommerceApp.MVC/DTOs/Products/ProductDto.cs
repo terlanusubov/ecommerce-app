@@ -16,6 +16,6 @@
         public string Description { get; set; }
         public string ProductCode { get; set; }
         public List<IGrouping<string, ProductColorDto>> Colors { get; set; } = new List<IGrouping<string, ProductColorDto>>();
-        public List<ProductSizeDto> Sizes { get; set; } = new List<ProductSizeDto>();
+        public List<IGrouping<string, ProductSizeDto>> Sizes { get; set; } = new List<IGrouping<string, ProductSizeDto>>();
     }
 }

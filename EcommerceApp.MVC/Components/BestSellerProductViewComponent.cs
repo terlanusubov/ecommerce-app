@@ -45,7 +45,7 @@ namespace EcommerceApp.MVC.Components
                                                                 Images = a.ProductPhotos.Where(b => b.IsMain == false).Select(b => _configuration["Files:Products"] + b.Image).ToList()
 
                                                             }).ToList()
-                                        }).ToListAsync();
+                                        }).Take(4).ToListAsync();
 
             return View(categories);
         }
