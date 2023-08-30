@@ -45,6 +45,8 @@
     <None Remove="Areas\Admin\Views\Shared\Components\Pagination\" />
     <None Remove="Areas\Admin\DTOs\" />
     <None Remove="Views\Product\" />
+    <None Remove="Views\Shared\Components\ProductReview\" />
+    <None Remove="ViewModels\Product\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -85,6 +87,8 @@
     <Folder Include="Areas\Admin\Views\Shared\Components\Pagination\" />
     <Folder Include="Areas\Admin\DTOs\" />
     <Folder Include="Views\Product\" />
+    <Folder Include="Views\Shared\Components\ProductReview\" />
+    <Folder Include="ViewModels\Product\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">

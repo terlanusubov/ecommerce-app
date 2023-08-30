@@ -68,7 +68,6 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
         }
 
 
-
         [HttpGet]
         public async Task<IActionResult> Add()
         {
@@ -76,7 +75,6 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
             var vm = await FillProductAdd();
             return View(vm);
         }
-
 
 
         [HttpPost]
@@ -193,6 +191,7 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
 
 
 
+
         private async Task<ProductAddVm> FillProductAdd(ProductAddVm vm = null)
         {
             var colors = await _context.Colors.Select(c => new ColorDto
@@ -236,6 +235,9 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
 
             return vm;
         }
+
+
+
     }
 }
 

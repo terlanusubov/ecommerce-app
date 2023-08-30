@@ -4,12 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using EcommerceApp.MVC.DTOs.Products;
 using EcommerceApp.MVC.Enums;
+using EcommerceApp.MVC.Filters;
 using EcommerceApp.MVC.Models;
+using EcommerceApp.MVC.ViewModels.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceApp.MVC.Controllers
 {
+
     public class ProductController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -64,6 +68,7 @@ namespace EcommerceApp.MVC.Controllers
 
 
 
+
             var colors = await _context
                 .ProductColors
                 .Include(c => c.Color)
@@ -76,6 +81,9 @@ namespace EcommerceApp.MVC.Controllers
 
                 }).GroupBy(c => c.Color).ToListAsync();
 
+            product.Colors = colors;
+
+            color = color == null ? product.Colors.Where(c => c.Any(a => a.ProductId == productId))?.FirstOrDefault()?.Key : color;
 
             var sizes = await _context.ProductSizes
                                         .Include(c => c.Size)
@@ -89,11 +97,40 @@ namespace EcommerceApp.MVC.Controllers
 
                                         }).GroupBy(c => c.Size).ToListAsync();
 
-            product.Colors = colors;
             product.Sizes = sizes;
 
 
             return View(product);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> AddReview(ProductReviewModel request)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                //TODO: update here
+                return RedirectToAction("Index", "Product", new { productId = request.ProductId });
+            }
+
+
+            var userId = HttpContext.User.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value;
+
+            var productReview = new ProductReview();
+
+            productReview.ProductId = request.ProductId;
+            productReview.ProductReviewStatusId = (int)ProductReviewStatus.Waiting;
+            productReview.Review = request.Description;
+            productReview.ReviewDate = DateTime.Now;
+            productReview.Rate = request.Rating;
+            productReview.UserId = Convert.ToInt32(userId);
+
+            await _context.ProductReviews.AddAsync(productReview);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Product", new { productId = request.ProductId });
         }
     }
 }

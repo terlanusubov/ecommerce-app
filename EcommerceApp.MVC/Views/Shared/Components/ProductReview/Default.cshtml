@@ -1,0 +1,28 @@
+﻿@model List<ProductReviewDto>
+
+<div class="product-commnets">
+    @foreach (var review in Model)
+    {
+        <div class="product-commnets-list mb-25 pb-15">
+            <div class="pro-comments-img">
+                <img style="width:50px;" src="@review.Image" alt="">
+            </div>
+            <div class="pro-commnets-text">
+                <h4>
+                    @review.Name @review.Surname -
+                    <span>@review.Issued.ToString("dd MM yyyy / hh:mm")</span>
+                </h4>
+                <div class="pro-rating">
+                    @for (var i = 0; i < review.Rating; i++)
+                    {
+                        <i class="far fa-star"></i>
+                    }
+
+                </div>
+                <p>
+                    @review.Description
+                </p>
+            </div>
+        </div>
+    }
+</div>
