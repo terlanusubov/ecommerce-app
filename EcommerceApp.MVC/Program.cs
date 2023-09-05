@@ -1,9 +1,13 @@
-﻿using EcommerceApp.MVC.Models;
+﻿using EcommerceApp.MVC.Interfaces;
+using EcommerceApp.MVC.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Services.AddTransient<IAccountService, AccountService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 
 
 builder.Services.AddHttpContextAccessor();

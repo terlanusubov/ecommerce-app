@@ -47,6 +47,10 @@
     <None Remove="Views\Product\" />
     <None Remove="Views\Shared\Components\ProductReview\" />
     <None Remove="ViewModels\Product\" />
+    <None Remove="Interfaces\" />
+    <None Remove="Core\" />
+    <None Remove="Core\Requests\" />
+    <None Remove="Core\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -89,6 +93,10 @@
     <Folder Include="Views\Product\" />
     <Folder Include="Views\Shared\Components\ProductReview\" />
     <Folder Include="ViewModels\Product\" />
+    <Folder Include="Interfaces\" />
+    <Folder Include="Core\" />
+    <Folder Include="Core\Requests\" />
+    <Folder Include="Core\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">

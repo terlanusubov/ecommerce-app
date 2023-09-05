@@ -2,7 +2,10 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using EcommerceApp.MVC.Core;
+using EcommerceApp.MVC.Core.Requests;
 using EcommerceApp.MVC.Enums;
+using EcommerceApp.MVC.Interfaces;
 using EcommerceApp.MVC.Models;
 using EcommerceApp.MVC.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -15,13 +18,12 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
     [Area("admin")]
     public class AccountController : Controller
     {
+        private readonly IAccountService _accountService;
 
-        private readonly ApplicationDbContext _context;
-        public AccountController(ApplicationDbContext context)
+        public AccountController(IAccountService accountService)
         {
-            _context = context;
+            _accountService = accountService;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Login()
@@ -30,62 +32,26 @@ namespace EcommerceApp.MVC.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return View(request);
             }
 
+            var result = await _accountService.Login(request, true);
 
-            var user = await _context.Users
-                                        .Include(c => c.UserRole)
-                                            .Where(c => c.Email == request.Email).FirstOrDefaultAsync();
-
-
-
-            if (user == null)
+            if (result.Status != 200)
             {
-                ModelState.AddModelError("", "Email or password is incorrect");
-                return View(request);
-            }
-
-            if (user.UserRoleId != (int)UserRoleEnum.Admin)
-            {
-                ModelState.AddModelError("", "You dont have an access to enter the system.");
-                return View(request);
-            }
-
-
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                var buffer = Encoding.UTF8.GetBytes(request.Password);
-
-                var hash = sha256.ComputeHash(buffer);
-
-                if (!user.Password.SequenceEqual(hash))
+                foreach (var item in result.Errors)
                 {
-                    ModelState.AddModelError("", "Email or password is incorrect");
-                    return View(request);
+                    ModelState.AddModelError(item.Key, item.Value);
                 }
+
+                return View(request);
             }
 
 
-            var claims = new List<Claim>
-                 {
-                     new Claim("Name", user.Name),
-                     new Claim("Surname", user.Surname),
-                     new Claim("Role", user.UserRole.Name),
-                     new Claim("RoleId", user.UserRoleId.ToString()),
-                     new Claim("Id", user.Id.ToString()),
-                 };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await HttpContext.SignInAsync(
-             CookieAuthenticationDefaults.AuthenticationScheme,
-           new ClaimsPrincipal(claimsIdentity));
 
             return RedirectToAction("Index", "Home", new { area = "Admin" });
 

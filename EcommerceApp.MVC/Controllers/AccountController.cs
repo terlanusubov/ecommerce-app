@@ -2,7 +2,9 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using EcommerceApp.MVC.Core.Requests;
 using EcommerceApp.MVC.Enums;
+using EcommerceApp.MVC.Interfaces;
 using EcommerceApp.MVC.Models;
 using EcommerceApp.MVC.ViewModels.Account;
 using Microsoft.AspNetCore.Authentication;
@@ -14,11 +16,13 @@ namespace EcommerceApp.MVC.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public AccountController(ApplicationDbContext context)
+        private readonly IAccountService _accountService;
+        private readonly IAuthService _authService;
+        public AccountController(IAccountService accountService,
+                                IAuthService authService)
         {
-            _context = context;
+            _accountService = accountService;
+            _authService = authService;
         }
 
 
@@ -35,7 +39,7 @@ namespace EcommerceApp.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
 
             if (!ModelState.IsValid)
@@ -43,51 +47,39 @@ namespace EcommerceApp.MVC.Controllers
                 return View(request);
             }
 
+            var result = await _accountService.Login(request);
 
-
-
-            var user = await _context.Users
-                                        .Include(c => c.UserRole)
-                                            .Where(c => c.Email == request.Email).FirstOrDefaultAsync();
-
-
-
-            if (user == null)
+            if (result.Status != 200)
             {
-                ModelState.AddModelError("", "Email or password is incorrect");
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.Key, item.Value);
+                }
+
                 return View(request);
             }
 
 
-            using (SHA256 sha256 = SHA256.Create())
+            var cookiAuthModel = new CookieAuthRequest();
+            cookiAuthModel.Name = result.Response.Name;
+            cookiAuthModel.Surname = result.Response.Surname;
+            cookiAuthModel.UserId = result.Response.UserId;
+            cookiAuthModel.Role = result.Response.Role;
+            cookiAuthModel.RoleId = result.Response.RoleId;
+
+            var cookieAuthResult = await _authService.CookieAuth(cookiAuthModel);
+
+            if (cookieAuthResult.Status != 200)
             {
-                var buffer = Encoding.UTF8.GetBytes(request.Password);
-
-                var hash = sha256.ComputeHash(buffer);
-
-                if (!user.Password.SequenceEqual(hash))
+                foreach (var item in cookieAuthResult.Errors)
                 {
-                    ModelState.AddModelError("", "Email or password is incorrect");
-                    return View(request);
+                    ModelState.AddModelError(item.Key, item.Value);
                 }
+
+                return View(request);
             }
 
 
-            var claims = new List<Claim>
-                 {
-                     new Claim("Name", user.Name),
-                     new Claim("Surname", user.Surname),
-                     new Claim("Role", user.UserRole.Name),
-                     new Claim("RoleId", user.UserRoleId.ToString()),
-                     new Claim("Id", user.Id.ToString()),
-                 };
-
-            var claimsIdentity = new ClaimsIdentity(
-                claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await HttpContext.SignInAsync(
-             CookieAuthenticationDefaults.AuthenticationScheme,
-           new ClaimsPrincipal(claimsIdentity));
 
             return RedirectToAction("Index", "Home");
         }
@@ -110,46 +102,23 @@ namespace EcommerceApp.MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel request)
+        public async Task<IActionResult> Register(RegisterRequest request)
         {
-
-
             if (!ModelState.IsValid)
             {
                 return View(request);
             }
 
-            var user = await _context.Users.Where(c => c.Email == request.Email).FirstOrDefaultAsync();
-
-            if (user != null) // user is not null
+            var result = await _accountService.Register(request);
+            if (result.Status != 200)
             {
-                ModelState.AddModelError("", "Bu e-poçt ünvanı artıq qeydiyyatdan keçmişdir.");
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.Key, item.Value);
+                }
+
                 return View(request);
             }
-
-
-            user = new User();
-            user.Name = request.Name;
-            user.Surname = request.Surname;
-            user.Email = request.Email;
-            user.RegisterDate = DateTime.Now;
-            user.UserRoleId = (int)UserRoleEnum.User;
-            user.Created = DateTime.Now;
-            user.Updated = DateTime.Now;
-            user.UserStatusId = (int)UserStatus.Active;
-
-
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                var buffer = Encoding.UTF8.GetBytes(request.Password);
-
-                var hash = sha256.ComputeHash(buffer);
-
-                user.Password = hash;
-            }
-
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
 
             return RedirectToAction("Login", "Account");
         }
