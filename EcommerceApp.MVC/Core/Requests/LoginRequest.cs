@@ -11,6 +11,7 @@ namespace EcommerceApp.MVC.Core.Requests
 
         [Required(ErrorMessage = "Şifrə boş qala bilməz.")]
         public string Password { get; set; }
+        public string? ReturnUrl { get; set; }
     }
 }
 

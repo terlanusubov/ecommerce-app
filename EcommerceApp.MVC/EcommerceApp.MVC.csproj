@@ -53,12 +53,8 @@
     <None Remove="Core\Responses\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Views\" />
-    <Folder Include="Models\" />
     <Folder Include="Data\" />
     <Folder Include="Views\Home\" />
-    <Folder Include="Views\Shared\" />
     <Folder Include="wwwroot\manifests\" />
     <Folder Include="wwwroot\uploads\sliders\" />
     <Folder Include="DTOs\Sliders\" />
@@ -68,8 +64,6 @@
     <Folder Include="ViewModels\Home\" />
     <Folder Include="Views\Account\" />
     <Folder Include="ViewModels\Account\" />
-    <Folder Include="Components\" />
-    <Folder Include="Views\Shared\Components\" />
     <Folder Include="Views\Shared\Components\Slider\" />
     <Folder Include="Views\Shared\Components\Banner\" />
     <Folder Include="Views\Shared\Components\BestSellerProduct\" />
@@ -93,10 +87,6 @@
     <Folder Include="Views\Product\" />
     <Folder Include="Views\Shared\Components\ProductReview\" />
     <Folder Include="ViewModels\Product\" />
-    <Folder Include="Interfaces\" />
-    <Folder Include="Core\" />
-    <Folder Include="Core\Requests\" />
-    <Folder Include="Core\Responses\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">

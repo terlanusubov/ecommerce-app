@@ -25,6 +25,7 @@
                     <h3 class="text-center mb-60">Login From Here</h3>
                     @Html.ValidationSummary(true)
                     <form action="@Url.Action("Login","Account")" method="post">
+                        <input name="ReturnUrl"  type="hidden" value="@Model.ReturnUrl"/>
                         @Html.ValidationMessageFor(c => c.Email)
                         <label for="name">Email Address <span>**</span></label>
                         <input name="Email" id="name" type="text" placeholder="Enter Username or Email address..." />
@@ -42,7 +43,7 @@
                         </div>
                         <button type="submit" class="btn theme-btn-2 w-100">Login Now</button>
                         <div class="or-divide"><span>or</span></div>
-                        <button class="btn theme-btn w-100">Register Now</button>
+                        <a href="@Url.Action("Register","Account", new {returnUrl = Context.Request.GetEncodedPathAndQuery()})" class="btn theme-btn w-100">Register Now</a>
                     </form>
                 </div>
             </div>

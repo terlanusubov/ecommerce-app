@@ -163,12 +163,12 @@
                             <div class="product-details-action">
                                 <form action="#">
                                     <div class="plus-minus">
-                                        <div class="cart-plus-minus"><input type="text" value="1" /></div>
+                                        <div class="cart-plus-minus"><input id="cart-count" type="text" value="1" /></div>
                                     </div>
                                     <button class="details-action-icon" type="submit"><i class="fas fa-heart"></i></button>
                                     <button class="details-action-icon" type="submit"><i class="fas fa-hourglass"></i></button>
                                     <div class="details-cart mt-40">
-                                        <button class="btn theme-btn">purchase now</button>
+                                        <button data-productId="@Model.ProductId" id="add-cart" type="button" class="btn theme-btn">purchase now</button>
                                     </div>
                                 </form>
                             </div>
@@ -215,35 +215,35 @@
                                         <div class="your-rating mb-40">
                                             <span>Your Rating:</span>
                                             <div class="rating-list">
-                                                <a href="#">
+                                                <a data-id="1" href="#">
                                                     <i class="far fa-star"></i>
                                                 </a>
-                                                <a href="#">
+                                                <a data-id="2" href="#">
                                                     <i class="far fa-star"></i>
                                                 </a>
-                                                <a href="#">
+                                                <a data-id="3" href="#">
                                                     <i class="far fa-star"></i>
                                                 </a>
-                                                <a href="#">
+                                                <a data-id="4" href="#">
                                                     <i class="far fa-star"></i>
                                                 </a>
-                                                <a href="#">
+                                                <a data-id="5" href="#">
                                                     <i class="far fa-star"></i>
                                                 </a>
                                             </div>
                                         </div>
-                                        <form method="post" class="review-form" action="@Url.Action("AddReview","Product")">
+                                        @* <form method="post" class="review-form" action="@Url.Action("AddReview","Product")"> *@
                                             <div class="row">
-                                                <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                                                <input type="hidden" name="ProductId" id="add-review-productId" value="@Model.ProductId" />
                                                 <div class="col-xl-12">
                                                     <label for="message">YOUR REVIEW</label>
                                                     <textarea name="Description" id="message" cols="30" rows="10"></textarea>
                                                 </div>
                                                 <div class="col-xl-12">
-                                                    <button type="submit" class="btn theme-btn">Add your Review</button>
+                                                    <button id="add-review-button" type="button" class="btn theme-btn">Add your Review</button>
                                                 </div>
                                             </div>
-                                        </form>
+                                        @* </form> *@
                                     }
 
                                 </div>
@@ -274,8 +274,127 @@
 
 @section Scripts{
 
-    <script>let size = document.querySelectorAll(".shop-size li a");
-        console.log(size);
+    <script>
+
+        let delIcons = document.querySelectorAll(".del-icon a");
+
+        for(let delIcon of delIcons){
+            delIcon.addEventListener("click",function(e){
+                e.preventDefault();
+
+                let productId = delIcon.getAttribute("data-productId");
+                const xhttp = new XMLHttpRequest();
+                xhttp.onload = function () {
+                    let res = JSON.parse(this.responseText);
+                    if(res.status == 400){
+                        alert("Xeta");
+                        return;
+                    }
+
+                    alert("ugurlu emeliyyat");
+                    //TODO : delete cart from UI
+
+                    }
+
+                xhttp.open("GET", "/cart/delete?productId=" + productId, true);
+
+                xhttp.send();
+            })
+        }
+
+
+        //Add to basket
+        let cartButton = document.querySelector("#add-cart");
+
+        cartButton.addEventListener("click", function () {
+            let countValue = document.querySelector("#cart-count").value;
+
+            let productId = this.getAttribute("data-productId");
+           
+            let cartAddModel = {
+                ProductId: productId,
+                Count: countValue
+            };
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+
+                let res = JSON.parse(this.responseText);
+
+                if (res.status == 400) {
+                    alert("xeta");
+                    return;
+                }
+
+                let miniCart = document.querySelector(".minicart");
+
+                let miniCartHtml = miniCart.innerHTML;
+
+                if(res.data.isExists == false){
+                    let newCartItem = `<li data-id="${res.data.productId}">
+                                <div class="cart-img">
+                                    <a href="product-details.html">
+                                        <img src="${res.data.image}" alt="" />
+                                    </a>
+                                </div>
+                                <div class="cart-content">
+                                    <h3>
+                                        <a href="/product/index?productId=${res.data.productId}">${res.data.name}</a>
+                                    </h3>
+                                    <div class="cart-price">
+
+                                    </div>
+                                </div>
+                                <div class="del-icon new">
+                                    <a data-productId=${res.data.productId} href="#">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                </div>
+                            </li>`;
+
+
+                    let element = newCartItem + miniCartHtml;
+
+                    miniCart.innerHTML = element;
+                }
+               
+
+
+                let cartCount = document.querySelector(".cart-count");
+
+                cartCount.innerText = Number(cartCount.innerText) + Number(countValue);
+
+                document.querySelector(".total-price span:last-child").innerText = "$" + res.data.totalPrice;
+
+                let delNewIcons = document.querySelectorAll(".del-icon.new a");
+
+                //TODO: Event duplication
+
+                // for (let delIcon of delNewIcons) {
+                //     if (typeof delIcon.onclick != "function") {
+                //         delIcon.addEventListener("click", function (e) {
+                //             e.preventDefault();
+
+                //             let productId = delIcon.getAttribute("data-productId");
+                //             alert(productId);
+                //         });
+                //     }
+                   
+                // }
+            }
+
+            xhttp.open("POST", "/cart/add", true);
+            xhttp.setRequestHeader('Content-Type', 'application/json')
+
+            xhttp.send(JSON.stringify(cartAddModel));
+
+
+        });
+
+
+        //Size 
+        
+        let size = document.querySelectorAll(".shop-size li a");
         for (let s of size) {
             s.addEventListener("click", function (e) {
                 e.preventDefault();
@@ -295,6 +414,94 @@
 
 
             });
-        }</script>
+        }
+        
+       //Size end
+
+        let rating = null;
+
+        let ratingListLinks = document.querySelectorAll(".rating-list a");
+
+        for (let link of ratingListLinks) {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+
+                rating = link.getAttribute("data-id");
+                
+            })
+        }
+
+
+        let addReviewButton = document.querySelector("#add-review-button");
+
+        addReviewButton.addEventListener("click", function () {
+            let productId = document.querySelector("#add-review-productId").value;
+            let description = document.querySelector("#message").value;
+
+            let data = {
+                ProductId: productId,
+                Description: description,
+                Rating: rating
+            };
+
+
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+
+                document.querySelector("#message").value = "";
+                rating = null;
+
+
+                let result = JSON.parse(this.responseText);
+                if (result.status == 400) {
+                    alert("Xeta bas verdi!");
+                    return;
+                }
+
+
+                let commentWrapper = document.createElement("div");
+
+                commentWrapper.className = "product-commnets-list mb-25 pb-15";
+
+                let ratingDiv = `   <div class="pro-rating">`;
+
+                for (let i = 0; i < result.rate; i++) {
+                    ratingDiv += '<i class="far fa-star"></i>';
+                }
+
+                ratingDiv += ' </div>';
+
+                let comment = `
+                    <div class="pro-comments-img">
+                        <img style="width:50px;" src="${result.image}" alt="">
+                    </div>
+                    <div class="pro-commnets-text">
+                        <h4>
+                            ${result.name} ${result.surname} -
+                            <span>${result.date}</span>
+                        </h4>
+                       ${ratingDiv}
+                        <p>
+                                    ${description}
+                        </p>
+                    </div>
+              `;
+
+                commentWrapper.innerHTML = comment;
+               
+                let descText = document.querySelector(".desc-text .product-commnets");
+
+                descText.insertBefore(commentWrapper,descText.firstChild)
+
+            }
+
+            xhttp.open("POST","/product/addReview",true);
+            xhttp.setRequestHeader('Content-Type', 'application/json')
+
+            xhttp.send(JSON.stringify(data));
+        })
+
+
+    </script>
 
 }

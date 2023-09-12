@@ -1,14 +1,14 @@
-﻿@model RegisterModel
+﻿@model RegisterRequest
 <!-- breadcrumb-area-start -->
 <section class="breadcrumb-area" data-background="/img/bg/page-title.png">
     <div class="container">
         <div class="row">
             <div class="col-xl-12">
                 <div class="breadcrumb-text text-center">
-                    <h1>Login</h1>
+                    <h1>Register</h1>
                     <ul class="breadcrumb-menu">
                         <li><a href="index.html">home</a></li>
-                        <li><span>Login</span></li>
+                        <li><span>Register</span></li>
                     </ul>
                 </div>
             </div>
@@ -25,6 +25,7 @@
                     <h3 class="text-center mb-60">Signup From Here</h3>
                     @Html.ValidationSummary(true)
                     <form action="@Url.Action("Register","Account")" method="post">
+                        <input value="@Model.ReturnUrl" name="ReturnUrl"  type="hidden"/>
                         @Html.ValidationMessageFor(c => c.Name)
                         <label for="name">Name <span>**</span></label>
                         <input value="@Model?.Name" name="Name" id="name" type="text" placeholder="Enter Name..." />
@@ -45,7 +46,7 @@
                         <div class="mt-10"></div>
                         <button type="submit" class="btn theme-btn-2 w-100">Register Now</button>
                         <div class="or-divide"><span>or</span></div>
-                        <button class="btn theme-btn w-100">login Now</button>
+                        <a href="@Url.Action("Login","Account" ,new  {returnUrl = Context.Request.GetEncodedPathAndQuery()})" class="btn theme-btn w-100">login Now</a>
                     </form>
                 </div>
             </div>

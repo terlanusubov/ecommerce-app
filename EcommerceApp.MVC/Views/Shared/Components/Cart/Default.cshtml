@@ -1,0 +1,52 @@
+﻿@model CartDto
+
+<li class="d-shop-cart">
+    <a href="#"><i class="flaticon-shopping-cart"></i> <span class="cart-count">@Model.Count</span></a>
+    <ul class="minicart">
+        @foreach (var item in Model.CartDetails)
+        {
+            <li data-id="@item.ProductId">
+                <div class="cart-img">
+                    <a href="product-details.html">
+                        <img src="@item.Image" alt="" />
+                    </a>
+                </div>
+                <div class="cart-content">
+                    <h3>
+                        <a href="@Url.Action("Index","Product", new {productId = item.ProductId})">@item.Name</a>
+                    </h3>
+                    <div class="cart-price">
+                        @if(item.Discount != null)
+                        {
+                            <span class="new">$ @item.AfterDiscountPrice</span>
+                            <span>
+                                <del>$@item.Price</del>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="new">$ @item.Price</span>
+                        }
+                    </div>
+                </div>
+                <div class="del-icon">
+                    <a data-productId="@item.ProductId" href="#">
+                        <i class="far fa-trash-alt"></i>
+                    </a>
+                </div>
+            </li>
+        }
+        <li>
+            <div class="total-price">
+                <span class="f-left">Total:</span>
+                <span class="f-right">$@Model.TotalPrice</span>
+            </div>
+        </li>
+        <li>
+            <div class="checkout-link">
+                <a href="cart.html">Shopping Cart</a>
+                <a class="red-color" href="checkout.html">Checkout</a>
+            </div>
+        </li>
+    </ul>
+</li>

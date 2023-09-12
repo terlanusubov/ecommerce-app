@@ -16,7 +16,9 @@ public partial class ApplicationDbContext : DbContext
     }
 
 
-
+    public virtual DbSet<CartDetail> CartDetails { get; set; }
+    public virtual DbSet<Cart> Carts { get; set; }
+    public virtual DbSet<Log> Logs { get; set; }
     public virtual DbSet<BannerAd> BannerAds { get; set; }
 
     public virtual DbSet<Slider> Sliders { get; set; }

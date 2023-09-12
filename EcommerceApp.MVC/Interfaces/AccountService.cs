@@ -80,7 +80,10 @@ namespace EcommerceApp.MVC.Interfaces
 
         public async Task<ServiceResult<RegisterResponse>> Register(RegisterRequest request)
         {
-            var user = await _context.Users.Where(c => c.Email == request.Email).FirstOrDefaultAsync();
+            var user = await _context.Users
+                                    .Include(c=>c.UserRole)
+                                        .Where(c => c.Email == request.Email)
+                                            .FirstOrDefaultAsync();
 
             if (user != null) // user is not null
             {
@@ -110,13 +113,15 @@ namespace EcommerceApp.MVC.Interfaces
 
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
-
+            //TODO : look at user role
 
             return ServiceResult<RegisterResponse>.OK(new RegisterResponse
             {
                 Name = user.Name,
                 UserId = user.Id,
-                Surname = user.Surname
+                Surname = user.Surname,
+                Role = "Istifadeci",
+                RoleId = user.UserRoleId
             });
 
         }

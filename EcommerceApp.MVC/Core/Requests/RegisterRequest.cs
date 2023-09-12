@@ -22,6 +22,8 @@ namespace EcommerceApp.MVC.Core.Requests
         [Required(ErrorMessage = "Təkrar şifrə boş qala bilməz.")]
         [Compare("Password", ErrorMessage = "Təkrar şifrə düzgün deyil.")]
         public string ConfirmPassword { get; set; }
+
+        public string? ReturnUrl { get; set; }
     }
 }
 

@@ -106,17 +106,23 @@ namespace EcommerceApp.MVC.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddReview(ProductReviewModel request)
+        public async Task<JsonResult> AddReview([FromBody]ProductReviewModel request)
         {
 
             if (!ModelState.IsValid)
             {
                 //TODO: update here
-                return RedirectToAction("Index", "Product", new { productId = request.ProductId });
+                return Json(new
+                {
+                    status = 400,
+                    error = "Validation is not correct"
+                });
             }
 
 
             var userId = HttpContext.User.Claims.Where(c => c.Type == "Id").FirstOrDefault().Value;
+            var name = HttpContext.User.Claims.Where(c => c.Type == "Name").FirstOrDefault().Value;
+            var surname = HttpContext.User.Claims.Where(c => c.Type == "Surname").FirstOrDefault().Value;
 
             var productReview = new ProductReview();
 
@@ -124,13 +130,21 @@ namespace EcommerceApp.MVC.Controllers
             productReview.ProductReviewStatusId = (int)ProductReviewStatus.Waiting;
             productReview.Review = request.Description;
             productReview.ReviewDate = DateTime.Now;
-            productReview.Rate = request.Rating;
+            productReview.Rate = (int) request.Rating;
             productReview.UserId = Convert.ToInt32(userId);
 
             await _context.ProductReviews.AddAsync(productReview);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Product", new { productId = request.ProductId });
+            return Json(new
+            {
+                status = 200,
+                name = name,
+                surname = surname,
+                date = productReview.ReviewDate.ToString("dd MM yyyy / hh:mm"),
+                image = "/uploads/user.jpeg",
+                rate = productReview.Rate
+            });
         }
     }
 }
