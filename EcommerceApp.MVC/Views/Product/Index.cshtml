@@ -279,6 +279,7 @@
         let delIcons = document.querySelectorAll(".del-icon a");
 
         for(let delIcon of delIcons){
+
             delIcon.addEventListener("click",function(e){
                 e.preventDefault();
 
@@ -291,8 +292,15 @@
                         return;
                     }
 
-                    alert("ugurlu emeliyyat");
-                    //TODO : delete cart from UI
+
+                    let deleteElement = document.querySelector(`li[data-id="${productId}"]`);
+
+                    deleteElement.parentElement.removeChild(deleteElement);
+
+                    let oldCartCount = document.querySelector(".cart-count").innerText;
+                    document.querySelector(".cart-count").innerText = Number(oldCartCount) - res.data.count;
+
+                    document.querySelector(".total-price span:last-child").innerText = "$"+res.data.totalPrice;
 
                     }
 
@@ -328,10 +336,13 @@
 
                 let miniCart = document.querySelector(".minicart");
 
-                let miniCartHtml = miniCart.innerHTML;
+               
 
                 if(res.data.isExists == false){
-                    let newCartItem = `<li data-id="${res.data.productId}">
+
+                    let li = document.createElement("li");
+                    li.setAttribute("data-id", res.data.productId);
+                    let newCartItem = `
                                 <div class="cart-img">
                                     <a href="product-details.html">
                                         <img src="${res.data.image}" alt="" />
@@ -350,13 +361,43 @@
                                         <i class="far fa-trash-alt"></i>
                                     </a>
                                 </div>
-                            </li>`;
+                            `;
 
+                    li.innerHTML = newCartItem;
 
-                    let element = newCartItem + miniCartHtml;
+                    miniCart.insertBefore(li, miniCart.firstChild);
 
-                    miniCart.innerHTML = element;
+                    let link = li.querySelector(".del-icon a");
+                    link.onclick = function (e) {
+                        e.preventDefault();
+
+                        let productId = this.getAttribute("data-productId");
+                        const xhttp = new XMLHttpRequest();
+                        xhttp.onload = function () {
+                            let res = JSON.parse(this.responseText);
+                            if (res.status == 400) {
+                                alert("Xeta");
+                                return;
+                            }
+
+                            
+                            let deleteElement = document.querySelector(`li[data-id="${productId}"]`);
+
+                            deleteElement.parentElement.removeChild(deleteElement);
+
+                            let oldCartCount = document.querySelector(".cart-count").innerText;
+                            document.querySelector(".cart-count").innerText = Number(oldCartCount) - res.data.count;
+                            document.querySelector(".total-price span:last-child").innerText = "$" + res.data.totalPrice;
+
+                        }
+
+                        xhttp.open("GET", "/cart/delete?productId=" + productId, true);
+
+                        xhttp.send();
+                    }
+
                 }
+                 
                
 
 
@@ -366,21 +407,9 @@
 
                 document.querySelector(".total-price span:last-child").innerText = "$" + res.data.totalPrice;
 
-                let delNewIcons = document.querySelectorAll(".del-icon.new a");
+              
 
-                //TODO: Event duplication
-
-                // for (let delIcon of delNewIcons) {
-                //     if (typeof delIcon.onclick != "function") {
-                //         delIcon.addEventListener("click", function (e) {
-                //             e.preventDefault();
-
-                //             let productId = delIcon.getAttribute("data-productId");
-                //             alert(productId);
-                //         });
-                //     }
-                   
-                // }
+               
             }
 
             xhttp.open("POST", "/cart/add", true);

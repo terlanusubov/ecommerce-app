@@ -119,9 +119,13 @@ namespace EcommerceApp.MVC.Interfaces
 
             cart.CartDetails.Remove(cartDetail);
 
+            var res = new CartDeleteItemResponse();
+            res.Count = cartDetail.Count;
+            res.TotalPrice = cart.TotalPrice;
+
             await _context.SaveChangesAsync();
 
-            return ServiceResult<CartDeleteItemResponse>.OK(new CartDeleteItemResponse());
+            return ServiceResult<CartDeleteItemResponse>.OK(res);
 
         }
     }

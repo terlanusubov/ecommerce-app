@@ -2,5 +2,7 @@
 {
     public class CartDeleteItemResponse
     {
+        public int Count { get; set; }
+        public double TotalPrice { get; set; }
     }
 }

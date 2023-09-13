@@ -48,7 +48,7 @@ namespace EcommerceApp.MVC.Controllers
                 });
             }
 
-            return Json(new { status = 200 });
+            return Json(new { status = 200 ,data = response.Response});
 
         }
     }
