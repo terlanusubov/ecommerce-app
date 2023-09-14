@@ -7,7 +7,7 @@
         {
             <li data-id="@item.ProductId">
                 <div class="cart-img">
-                    <a href="product-details.html">
+                    <a href="@Url.Action("Index","Product",new {productId=item.ProductId})">
                         <img src="@item.Image" alt="" />
                     </a>
                 </div>
@@ -16,7 +16,7 @@
                         <a href="@Url.Action("Index","Product", new {productId = item.ProductId})">@item.Name</a>
                     </h3>
                     <div class="cart-price">
-                        @if(item.Discount != null)
+                        @if(item.AfterDiscountPrice != null)
                         {
                             <span class="new">$ @item.AfterDiscountPrice</span>
                             <span>
@@ -44,7 +44,7 @@
         </li>
         <li>
             <div class="checkout-link">
-                <a href="cart.html">Shopping Cart</a>
+                <a href="@Url.Action("List","Cart")">Shopping Cart</a>
                 <a class="red-color" href="checkout.html">Checkout</a>
             </div>
         </li>

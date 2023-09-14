@@ -1,10 +1,11 @@
 ﻿using EcommerceApp.MVC.Core.Requests;
 using EcommerceApp.MVC.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EcommerceApp.MVC.Controllers
 {
-    //TODO: Add authorization
+    [Authorize]
     public class CartController : Controller
     {
 
@@ -50,6 +51,20 @@ namespace EcommerceApp.MVC.Controllers
 
             return Json(new { status = 200 ,data = response.Response});
 
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> List()
+        {
+
+            var response = await _cartService.GetCartItems();
+
+            if(response.Status  != 200)
+                return RedirectToAction("Error","Home");
+
+
+            return View(response.Response);
         }
     }
 }
