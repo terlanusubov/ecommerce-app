@@ -58,10 +58,10 @@ namespace EcommerceApp.MVC.Interfaces
 
 
 
-            var cartDetail = await _context.CartDetails.Where(c => c.CartId == cart.Id && c.ProductId == request.ProductId)
-                                                            .FirstOrDefaultAsync();
-            bool isExists = false;
+            var cartDetail = await _context.CartDetails.Where(c => c.CartId == cart.Id && c.ProductId == request.ProductId).FirstOrDefaultAsync();
 
+           
+            bool isExists = false;
             if(cartDetail == null)
             {
                 cartDetail = new CartDetail();
